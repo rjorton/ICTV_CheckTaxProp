@@ -239,6 +239,7 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
         "Move; rename"]
 
     strict = True
+    really_strict = False
 
     # names_filename is a single field file - store all names in tax_names
     tax_names = []
@@ -412,7 +413,7 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
                 # 33=Exemplar genbank -> 38=genome comp
                 for i in range(33, 39):
                     # often virus abbrev and/or isolate design are empty - turn off with strict = False
-                    if prop[i] == "" and (strict or (not strict and i != 35 and i != 36)):
+                    if prop[i] == "" and (really_strict or (not really_strict and i != 35 and i != 36)):
                         all_output.append("Error-S1\t" + prop[39] + "\t" + prop[40] + "\t" + prop[31] + "\tempty '" + fields[i] + "' data field\tline number = " + str(taxprop.index(prop) + 1))
                         total_errors += 1
 
