@@ -1,5 +1,5 @@
 # ICTV_CheckTaxProp
-python script to check an ICTV Taxonomic Proposal (TP) for errors
+python script to check an ICTV Taxonomic Proposal [TP](https://talk.ictvonline.org/files/taxonomy-proposal-templates/) for errors
 
 Given an ICTV (2021) Taxonomic Proposal excel file (.xlsx):
 
