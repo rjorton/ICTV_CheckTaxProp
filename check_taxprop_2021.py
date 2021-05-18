@@ -402,10 +402,13 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
             all_output.append("Error-F2\t" + prop[39] + "\t" + prop[40] + "\t" + this_tax + "\tchange field '" + prop[39] + "' not found in the expected changes\tline number = " + str(taxprop.index(prop) + 1))
             total_errors += 1
 
+        if prop[39] == "Promote" or prop[39] == "Demote" or prop[39] == "Split" or prop[39] == "Merge":
+            all_output.append("Warning-W1\t" + prop[39] + "\t" + prop[40] + "\t" + this_tax + " this script can not currently process split/merge/promote/demote")
+
     # for species - initially check the species data is entered e.g. genome cov/comp
     for prop in taxprop:
         if prop[40] == "species":
-            if prop[39] == "Create new" or prop[39] == "Create new; assign as type species":
+            if prop[39] == "Create new":
                 # 33=Exemplar genbank -> 38=genome comp
                 for i in range(33, 39):
                     # often virus abbrev and/or isolate design are empty - turn off with strict = False
@@ -569,7 +572,7 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
                 current_name = prop[current_rank_fields[rank]]
                 new_name = prop[rank_fields[rank]]
 
-                if prop[39] == "Create new" or prop[39] == "Create new; assign as type species":
+                if prop[39] == "Create new":
 
                     all_output.append(check_current_taxonomy_empty(prop, fields, new_name, taxprop))
 
