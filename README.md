@@ -25,3 +25,5 @@ There is a simple bash script provided to loop over all excel files that you pla
 sh ../tp_loop.sh
 ```
 This relies on the Excels folder being within the ICTV_CheckTaxProp folder, as it is looking for the scripts and data files in the folder up (../)
+
+At the moment this script is not handling: Promote, Demote, Split and Merge operations (it will skip those out). In addition, it is not checking the Host field as this can be Other (specify).
