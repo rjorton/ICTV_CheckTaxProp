@@ -238,7 +238,7 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
         "Rename",
         "Move; rename"]
 
-    strict = False
+    strict = True
 
     # names_filename is a single field file - store all names in tax_names
     tax_names = []
