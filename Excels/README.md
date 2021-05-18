@@ -1,2 +1,6 @@
-# ICTV_CheckTaxProp
-python script to check an ICTV Taxonomic Proposal (TP) for errors
+# Excel input folder
+copy excel files here and run
+
+```
+sh ../tp_loop.sh
+```
