@@ -103,6 +103,22 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
         "genus": "viroid",
         "subgenus": "viroid"}
 
+    viriform_ends = {
+        "realm": "viriformia",
+        "subrealm": "viriforma",
+        "kingdom": "viriformae",
+        "subkingdom": "viriformites",
+        "phylum": "viriformicota",
+        "subphylum": "viriformicotina",
+        "class": "viriformicetes",
+        "subclass": "viriformicetidae",
+        "order": "viriformales",
+        "suborder": "viriformineae",
+        "family": "viriformidae",
+        "subfamily": "viriforminae",
+        "genus": "viriform",
+        "subgenus": "viriform"}
+
     # field number -> name in TP
     fields = {
         0: "realm",
@@ -404,6 +420,10 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
             total_errors += 1
 
         if prop[39] == "Promote" or prop[39] == "Demote" or prop[39] == "Split" or prop[39] == "Merge":
+            this_tax = ""
+            if prop[40] in ranks:
+                this_tax = prop[rank_fields[prop[40]]]
+
             all_output.append("Warning-W1\t" + prop[39] + "\t" + prop[40] + "\t" + this_tax + " this script can not currently process split/merge/promote/demote")
 
     # for species - initially check the species data is entered e.g. genome cov/comp
@@ -490,7 +510,7 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
                 new_names_lower[this_name.lower()] = prop[40]
 
             if this_name != "":
-                check_taxon_name(prop[39], this_name, prop[40], rank_ends, satellite_ends, viroid_ends, all_output, prop, taxprop)
+                check_taxon_name(prop[39], this_name, prop[40], rank_ends, satellite_ends, viroid_ends, viriform_ends, all_output, prop, taxprop)
 
     # check that sub taxa are contained within a parent - a subgenus must be in a genus etc
     for prop in taxprop:
@@ -574,7 +594,6 @@ def check_taxprop(tax_filename, names_filename, prop_filename):
                 new_name = prop[rank_fields[rank]]
 
                 if prop[39] == "Create new":
-
                     all_output.append(check_current_taxonomy_empty(prop, fields, new_name, taxprop))
 
                     all_output.append(check_proposed_empty_after_rank(prop, fields, new_name, taxprop, rank_fields))
@@ -851,7 +870,7 @@ def find_current_parent(prop, rank_pos):
     return parent
 
 
-def check_taxon_name(this_change, this_name, this_rank, rank_ends, satellite_ends, viroid_ends, all_output, prop, taxprop):
+def check_taxon_name(this_change, this_name, this_rank, rank_ends, satellite_ends, viroid_ends, viriform_ends, all_output, prop, taxprop):
 
     if not this_name[0].isalpha():
         all_output.append("Error-CTN1\t" + this_change + "\t" + this_rank + "\t" + this_name + "\tthe proposed " + this_rank + " name '" + this_name + "' does not start with a letter\tline number = " + str((taxprop.index(prop) + 1)))
@@ -863,8 +882,8 @@ def check_taxon_name(this_change, this_name, this_rank, rank_ends, satellite_end
             if not i.isalpha():
                 all_output.append("Error-CTN3\t" + this_change + "\t" + this_rank + "\t" + this_name + "\tthe proposed " + this_rank + " name '" + this_name + "' contains non-alphabetic characters\tline number = " + str((taxprop.index(prop) + 1)))
 
-        if not this_name.endswith(rank_ends[this_rank]) and not this_name.endswith(satellite_ends[this_rank]) and not this_name.endswith(viroid_ends[this_rank]):
-            all_output.append("Error-CTN4\t" + this_change + "\t" + this_rank + "\t" + this_name + "\tthe proposed " + this_rank + " name '" + this_name + "' does not end with '" + rank_ends[this_rank] + "' or '" + satellite_ends[this_rank] + "' or '" + viroid_ends[this_rank] + "'\tline number = " + str((taxprop.index(prop) + 1)))
+        if not this_name.endswith(rank_ends[this_rank]) and not this_name.endswith(satellite_ends[this_rank]) and not this_name.endswith(viroid_ends[this_rank]) and not this_name.endswith(viriform_ends[this_rank]):
+            all_output.append("Error-CTN4\t" + this_change + "\t" + this_rank + "\t" + this_name + "\tthe proposed " + this_rank + " name '" + this_name + "' does not end with '" + rank_ends[this_rank] + "' or '" + satellite_ends[this_rank] + "' or '" + viroid_ends[this_rank] + "' or '" + viriform_ends[this_rank] + "'\tline number = " + str((taxprop.index(prop) + 1)))
     else:
         for i in this_name:
             if not i.isalnum() and i != " " and i != "-":
